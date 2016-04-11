@@ -15,13 +15,11 @@ void Init_Nokogiri_ext() {
   rb_cNokogiri_XML_Document = rb_const_get(Nokogiri_XML, rb_intern("Document"));
   rb_cNokogiri_XML_Node = rb_const_get(Nokogiri_XML, rb_intern("Node"));
 
-  rb_define_method(rb_cNokogiri_XML_Node,     "sign!",                    sign, 1);
-  rb_define_method(rb_cNokogiri_XML_Document, "verify_with_rsa_key",      verify_signature_with_rsa_key, 1);
-  rb_define_method(rb_cNokogiri_XML_Document, "verify_with_named_keys",   verify_signature_with_named_keys, 1);
-  rb_define_method(rb_cNokogiri_XML_Document, "verify_with_certificates", verify_signature_with_certificates, 1);
-  rb_define_method(rb_cNokogiri_XML_Document, "encrypt_with_key",         encrypt_with_key, 3);
-  rb_define_method(rb_cNokogiri_XML_Document, "decrypt_with_key",         decrypt_with_key, 2);
-  rb_define_method(rb_cNokogiri_XML_Node,     "set_id_attribute",         set_id_attribute, 1);
+  rb_define_method(rb_cNokogiri_XML_Node,     "sign!",            sign, 1);
+  rb_define_method(rb_cNokogiri_XML_Node,     "verify_with",      verify_with, 1);
+  rb_define_method(rb_cNokogiri_XML_Document, "encrypt_with_key", encrypt_with_key, 3);
+  rb_define_method(rb_cNokogiri_XML_Document, "decrypt_with_key", decrypt_with_key, 2);
+  rb_define_method(rb_cNokogiri_XML_Node,     "set_id_attribute", set_id_attribute, 1);
 
   rb_eSigningError      = rb_define_class_under(XMLSec, "SigningError",      rb_eRuntimeError);
   rb_eVerificationError = rb_define_class_under(XMLSec, "VerificationError", rb_eRuntimeError);

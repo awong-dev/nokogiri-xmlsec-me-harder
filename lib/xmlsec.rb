@@ -35,15 +35,10 @@ class Nokogiri::XML::Document
   # `:certificates` as aliases for `:x509`.
   #
   def verify_with opts_or_keys
-    if (certs = opts_or_keys[:cert]) ||
-       (certs = opts_or_keys[:certs])
-      certs = [certs] unless certs.kind_of?(Array)
-      verify_with_certificates certs
-    elsif opts_or_keys[:key]
-      verify_with_rsa_key opts_or_keys[:key]
-    else
-      verify_with_named_keys opts_or_keys
-    end
+    first_signature = root.at_xpath("//ds:Signature", 'ds' => "http://www.w3.org/2000/09/xmldsig#")
+    raise XMLSec::VerificationError("start node not found") unless first_signature
+
+    first_signature.verify_with(opts_or_keys)
   end
 
   # Attempts to verify the signature of this document using only certificates
@@ -51,7 +46,7 @@ class Nokogiri::XML::Document
   # `verify_with certificates: []` (that is, an empty array).
   #
   def verify_signature
-    verify_with_certificates []
+    verify_with(certs: [])
   end
 
   # Encrypts the current document, then returns it.
